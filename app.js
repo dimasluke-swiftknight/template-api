@@ -1,5 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const logger = require('./api/config/logger');
+
+const global = require('./global');
 
 const app = express();
 
@@ -22,15 +25,25 @@ const connectDatabase = async (dbUrl) => {
             useUnifiedTopology: true
         }, (error) => {
             if (error) throw error;
-            console.log(`DB connected at ${dbUrl}`);
+            logger.info({
+                application: applicationName,
+                message: `DB connected at ${dbUrl}`
+            });
         });
 
         mongoose.connection.on('disconnected', () => {
-            console.log(`DB disconnected at ${dbUrl}`);
+            logger.error({
+                application: applicationName,
+                message: `DB disconnected at ${dbUrl}`
+            });
         });
 
         mongoose.connection.on('reconnected', () => {
-            console.log(`DB reconnected at ${dbUrl}`);
+            logger.info({
+                application: applicationName,
+                message: `DB reconnected at ${dbUrl}`
+            });
+
         });
 
         // await db.connect();
@@ -44,7 +57,10 @@ const runServer = async (dbUrl, portNum) => {
         await connectDatabase(dbUrl);
 		try {
 			server = app.listen(portNum, () => {
-				console.log(`Server is listening on port ${portNum}`);
+                logger.info({
+                    application: applicationName,
+                    message: `Server is listening on port ${portNum}`
+                });
 			});
 		} catch (error) {
 			mongoose.disconnect();
@@ -58,18 +74,30 @@ const runServer = async (dbUrl, portNum) => {
 const closeServer = async () => {
 	try {
 		await mongoose.disconnect(() => {
-			console.log('Disconnected from MongoDB');
+            logger.info({
+                application: applicationName,
+                message: 'Disconnected from MongoDB'
+            });
 		});
 		server.close(() => {
-			console.log('Server closed');
+            logger.info({
+                application: applicationName,
+                message: 'Server closed'
+            });
 		});
 	} catch (err) {
-		logger.error(err);
+		logger.error({
+            application: applicationName,
+            message: err
+        });
 	}
 };
 
 if (require.main === module) {
-	runServer(databaseUrl, port).catch(err => console.log(err));
+	runServer(databaseUrl, port).catch(err => logger.error({
+        application: applicationName,
+        message: err
+    }));
 }
 
 module.exports = { app, runServer, closeServer };
