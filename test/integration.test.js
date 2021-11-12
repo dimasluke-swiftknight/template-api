@@ -8,4 +8,19 @@ describe('Integration Test', () => {
       .get('/tests')
       .expect(200));
   });
+
+  describe('GET /tests', () => {
+    it('Call GET /tests to return aggregated results of two models - Passing', () => {
+      request(app)
+        .get('/tests')
+        .set('x-knight-correlation-id', 'Test-Id')
+        .expect(200)
+        .then((response) => {
+          assert(response.body, {
+            hello: 'world',
+            world: 'hello',
+          });
+        });
+    });
+  });
 });

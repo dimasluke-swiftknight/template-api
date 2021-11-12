@@ -12,16 +12,9 @@ const app = express();
 
 app.use(express.json());
 
-// const controllers = require('./api/controllers/index.js');
+const controllers = require('./api/controllers/index');
 
-// app.use('/', controllers.{ServiceController})
-
-app.use('/', express.Router().get('/tests', (_req, res) => {
-  res.json([
-    { name: 'template-hello', age: 26 },
-    { name: 'template-world', age: 28 },
-  ]);
-}));
+app.use('/', controllers.TestController);
 
 let server;
 
