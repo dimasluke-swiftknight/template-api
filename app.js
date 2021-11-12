@@ -1,7 +1,11 @@
 /* eslint-disable no-undef */
 const express = require('express');
 const mongoose = require('mongoose');
+const YAML = require('yamljs');
+const swaggerUi = require('swagger-ui-express');
 const logger = require('./api/config/logger');
+
+const swaggerDocument = YAML.load('./template-api.yaml');
 
 require('dotenv').config();
 
@@ -15,6 +19,8 @@ app.use(express.json());
 const controllers = require('./api/controllers/index');
 
 app.use('/', controllers.TestController);
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 let server;
 

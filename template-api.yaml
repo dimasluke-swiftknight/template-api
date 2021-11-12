@@ -1,0 +1,55 @@
+---
+openapi: 3.0.0
+info:
+  title: Template API
+  description: This is a template API spec
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/dimasluke/template-api/1.0.0
+  description: SwaggerHub API Auto Mocking
+paths:
+  /tests:
+    get:
+      summary: Template endpoint for Tests collection
+      description: Template endpoint for Tests collection
+      parameters:
+      - name: x-knight-correlation-id
+        in: header
+        description: Custom header to trace API call
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Aggregate result of two separate Tests models
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestItem'
+components:
+  schemas:
+    TestItem:
+      type: object
+      properties:
+        hello:
+          pattern: /[A-Za-z]{5}/
+          type: string
+          example: world
+        world:
+          pattern: /[A-Za-z]{5}/
+          type: string
+          example: hello
+  parameters:
+    correlationId:
+      name: x-knight-correlation-id
+      in: header
+      description: Custom header to trace API call
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+        format: uuid
