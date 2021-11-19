@@ -15,9 +15,12 @@ const app = express();
 app.use(express.json());
 
 const { TestController } = require('./api/controllers/index');
+const { defaultExceptionHandler } = require('./api/config/index');
 
 app.use('/', TestController);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+app.use(defaultExceptionHandler);
 
 module.exports = { app };
