@@ -1,7 +1,8 @@
+/* eslint-disable no-undef */
 const winston = require('winston');
 
 const { format, createLogger, transports } = winston;
-const { combine, timestamp } = format;
+const { combine, timestamp, prettyPrint } = format;
 
 const MESSAGE = Symbol.for('message');
 
@@ -21,6 +22,7 @@ const logConfiguration = {
   format: combine(
     timestamp(),
     format(envTag)(),
+    prettyPrint()
   ),
   transports: [
     new transports.File({ filename: './logs/output.log' }),
@@ -30,7 +32,7 @@ const logConfiguration = {
 const logger = createLogger(logConfiguration);
 
 if (process.env.APPLICATION_ENV !== 'production') {
-  logger.add(new transports.Console());
+  logger.add(new transports.Console({ level: 'debug' }));
 }
 
 module.exports = logger;

@@ -1,12 +1,9 @@
 /* eslint-disable no-undef */
 const Controller = require('express').Router();
 
-const Services = require('../services/index');
+const { TestService } = require('../services/index');
 
-const { TestService } = Services;
-
-const Test = require('../models/test');
-const TestV1 = require('../models/test-v1');
+const { TestModel, TestModelV1 } = require('../models/index');
 
 Controller
   .get('/tests', async (req, res) => {
@@ -16,8 +13,8 @@ Controller
       correlationId: req.headers['x-knight-correlation-id'],
     });
 
-    const testService = new TestService(Test);
-    const testV1Service = new TestService(TestV1);
+    const testService = new TestService(TestModel);
+    const testV1Service = new TestService(TestModelV1);
 
     const result = {
       ...await testService.getTests(),
