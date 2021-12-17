@@ -7,7 +7,7 @@ let server;
 
 const port = process.env.PORT || 3000;
 
-const databaseUrl = 'mongodb://127.0.0.1:27017';
+const databaseUrl = process.env.MONGODB_CONNECTION_STRING || 'mongodb://127.0.0.1:27017';
 
 const connectDatabase = async (dbUrl) => {
     await mongoose.connect(dbUrl, {

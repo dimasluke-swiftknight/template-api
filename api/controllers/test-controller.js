@@ -1,16 +1,16 @@
 /* eslint-disable no-undef */
-const Controller = require('express').Router();
+const controller = require('express').Router();
 
 const { TestService } = require('../services/index');
 
 const { TestModel, TestModelV1 } = require('../models/index');
 
-Controller
-  .get('/tests', async (req, res) => {
+controller
+  .get('/', async (req, res) => {
     logger.info({
       application: applicationName,
       message: 'start-get-tests',
-      correlationId: req.headers['x-knight-correlation-id'],
+      correlationId: req.headers['x-correlation-id'],
     });
 
     const testService = new TestService(TestModel);
@@ -24,10 +24,10 @@ Controller
     logger.info({
       application: applicationName,
       message: 'end-get-tests',
-      correlationId: req.headers['x-knight-correlation-id'],
+      correlationId: req.headers['x-correlation-id'],
     });
 
-    res.status(200).send(result);
+    return res.status(200).send(result);
   });
 
-module.exports = Controller;
+module.exports = controller;

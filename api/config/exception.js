@@ -4,30 +4,36 @@ const defaultExceptionHandler = async function (error, req, res, _next) {
     logger.error({
         application: applicationName,
         message: 'default-exception-handler ' + JSON.stringify(error.message),
-        correlationId: req.headers['x-knight-correlation-id'],
+        correlationId: req.headers['x-correlation-id'],
     })
 
     switch (error.cause) {
         case 'validation-error':
-            res.status(400).send({
+            return res.status(400).send({
                 status: 'Error',
                 message: error.message,
             });
-            break;
+        case 'authentication-error':
+            return res.status(401).send({
+                status: 'Error',
+                message: error.message,
+            });
+        case 'authorization-error':
+            return res.status(403).send({
+                status: 'Error',
+                message: error.message,
+            });
         case 'downstream-error':
-            res.status(502).send({
+            return res.status(502).send({
                 status: 'Error',
                 message: error.message,
             });
-            break;
         default:
-            res.status(500).send({
+            return res.status(500).send({
                 status: 'Error',
                 message: error.message,
             });
     }
-
-    return;
 }
 
 module.exports = defaultExceptionHandler;

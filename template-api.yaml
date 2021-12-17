@@ -1,8 +1,8 @@
 ---
 openapi: 3.0.0
 info:
-  title: Template API
-  description: This is a template API spec
+  title: Template
+  description: This is the Template API spec
   version: 1.0.0
 servers:
 - url: https://virtserver.swaggerhub.com/dimasluke/template-api/1.0.0
@@ -13,7 +13,7 @@ paths:
       summary: Template endpoint for Tests collection
       description: Template endpoint for Tests collection
       parameters:
-      - name: x-knight-correlation-id
+      - name: x-correlation-id
         in: header
         description: Custom header to trace API call
         required: true
@@ -44,7 +44,7 @@ components:
           example: hello
   parameters:
     correlationId:
-      name: x-knight-correlation-id
+      name: x-correlation-id
       in: header
       description: Custom header to trace API call
       required: true
