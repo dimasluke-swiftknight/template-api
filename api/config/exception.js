@@ -1,11 +1,14 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 const defaultExceptionHandler = async function (error, req, res, _next) {
-    logger.error({
-        application: applicationName,
-        message: 'default-exception-handler ' + JSON.stringify(error.message),
-        correlationId: req.headers['x-correlation-id'],
-    })
+    const correlationId = req.headers['x-correlation-id'];
+
+    logger.error(`default-exception-handler ${JSON.stringify(error.message)}`, {
+        metadata: {
+            application: applicationName,
+            correlationId
+        }
+    });
 
     switch (error.cause) {
         case 'validation-error':

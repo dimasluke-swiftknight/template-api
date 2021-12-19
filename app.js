@@ -8,19 +8,21 @@ const swaggerUi = require('swagger-ui-express');
 
 const swaggerDocument = YAML.load('./template-api.yaml');
 
+const { defaultExceptionHandler, requestMiddleware } = require('./api/config/index');
+
 require('dotenv').config();
 
 const app = express();
 
 app.use(express.json());
 
+app.use(requestMiddleware)
+
 const { TestController } = require('./api/controllers/index');
 
 app.use('/template/api/v1/tests', TestController);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
-const { defaultExceptionHandler } = require('./api/config/index');
 
 app.use(defaultExceptionHandler);
 
