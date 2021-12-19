@@ -6,7 +6,7 @@ const express = require('express');
 const YAML = require('yamljs');
 const swaggerUi = require('swagger-ui-express');
 
-const swaggerDocument = YAML.load('./template-api.yaml');
+const swaggerDocument = YAML.load('./docs/template-api.yaml');
 
 const { defaultExceptionHandler, requestMiddleware } = require('./api/config/index');
 

@@ -1,3 +1,5 @@
+const joi = require('joi');
+
 const requestMiddleware = async function requestMiddleware(req, res, next) {
   res.header(
     'Access-Control-Allow-Origin',
@@ -17,7 +19,7 @@ const requestMiddleware = async function requestMiddleware(req, res, next) {
 
   const correlationId = req.headers['x-correlation-id'];
 
-  if (!correlationId) {
+  if ((joi.string().guid().required().validate(correlationId)).error) {
     return res.status(400).send({
       status: 'Error',
       message: 'Request header "x-correlation-id" is required.',
