@@ -21,7 +21,7 @@ const customFormat = format((logEntry) => ({
 }));
 
 const mongodbTransport = new winston.transports.MongoDB({
-  db: process.env.MONGODB_CONNECTION_STRING || 'mongodb://127.0.0.1:27017',
+  db: process.env.MONGODB_CONNECTION_STRING_LOGS || 'mongodb://127.0.0.1:27017',
   collection: 'dev-logs',
   level: 'info',
   options: {
