@@ -1,12 +1,12 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 // eslint-disable-next-line no-unused-vars
-const global = require('./global');
-
 const express = require('express');
 const YAML = require('yamljs');
 const swaggerUi = require('swagger-ui-express');
+const global = require('./global');
 
-const swaggerDocument = YAML.load('./docs/template-api.yaml');
+const swaggerDocument = YAML.load('./api/docs/template-api.yaml');
 
 const { defaultExceptionHandler, requestMiddleware } = require('./api/config/index');
 
@@ -16,7 +16,7 @@ const app = express();
 
 app.use(express.json());
 
-app.use(requestMiddleware)
+app.use(requestMiddleware);
 
 const { TestController } = require('./api/controllers/index');
 

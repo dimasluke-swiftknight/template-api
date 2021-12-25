@@ -5,33 +5,29 @@ const winston = require('winston');
 require('winston-daily-rotate-file');
 require('winston-mongodb');
 
+require('../../global');
+
 const { format, createLogger, transports } = winston;
 const {
-  combine, timestamp, prettyPrint,
+  combine, timestamp, json, prettyPrint,
 } = format;
 
-const MESSAGE = Symbol.for('message');
-
-const envTag = (logEntry) => {
-  const tag = {
-    env: process.env.APPLICATION_ENV || 'local',
-  };
-  const taggedLog = Object.assign(tag, logEntry);
-  // eslint-disable-next-line no-param-reassign
-  logEntry[MESSAGE] = JSON.stringify(taggedLog);
-
-  return logEntry;
-};
+const customFormat = format((logEntry) => ({
+  ...logEntry,
+  metadata: {
+    ...logEntry.metadata,
+    ...{ application, environment },
+  },
+}));
 
 const mongodbTransport = new winston.transports.MongoDB({
   db: process.env.MONGODB_CONNECTION_STRING || 'mongodb://127.0.0.1:27017',
-  collection: 'dev',
+  collection: 'dev-logs',
   level: 'info',
   options: {
     useUnifiedTopology: true,
   },
   capped: true,
-  format: format.combine(format.timestamp(), format.json()),
 });
 
 const fileTransport = new transports.DailyRotateFile({
@@ -46,7 +42,8 @@ const logConfiguration = {
   level: process.env.LOG_LEVEL || 'info',
   format: combine(
     timestamp(),
-    format(envTag)(),
+    customFormat(),
+    json(),
     prettyPrint(),
   ),
   transports: [

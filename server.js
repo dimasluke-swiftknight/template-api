@@ -15,27 +15,15 @@ const connectDatabase = async (dbUrl) => {
     useUnifiedTopology: true,
   }, (error) => {
     if (error) throw error;
-    logger.info(`DB connected at ${dbUrl}`, {
-      metadata: {
-        application: applicationName,
-      },
-    });
+    logger.info(`DB connected at ${dbUrl}`);
   });
 
   mongoose.connection.on('disconnected', () => {
-    logger.error(`DB disconnected at ${dbUrl}`, {
-      metadata: {
-        application: applicationName,
-      },
-    });
+    logger.error(`DB disconnected at ${dbUrl}`);
   });
 
   mongoose.connection.on('reconnected', () => {
-    logger.info(`DB reconnected at ${dbUrl}`, {
-      metadata: {
-        application: applicationName,
-      },
-    });
+    logger.info(`DB reconnected at ${dbUrl}`);
   });
 };
 
@@ -43,11 +31,7 @@ const runServer = async (dbUrl, portNum) => {
   await connectDatabase(dbUrl);
   try {
     server = app.listen(portNum, () => {
-      logger.info(`Server is listening on port ${portNum}`, {
-        metadata: {
-          application: applicationName,
-        },
-      });
+      logger.info(`Server is listening on port ${portNum}`);
     });
   } catch (error) {
     mongoose.disconnect();
@@ -58,35 +42,19 @@ const runServer = async (dbUrl, portNum) => {
 const closeServer = async () => {
   try {
     mongoose.disconnect(() => {
-      logger.info('Disconnected from MongoDB', {
-        metadata: {
-          application: applicationName,
-        },
-      });
+      logger.info('Disconnected from MongoDB');
     });
     server.close(() => {
-      logger.info('Server closed', {
-        metadata: {
-          application: applicationName,
-        },
-      });
+      logger.info('Server closed');
     });
   } catch (err) {
-    logger.error(err, {
-      metadata: {
-        application: applicationName,
-      },
-    });
+    logger.error(err);
   }
 };
 
 if (require.main === module) {
   runServer(databaseUrl, port).catch((err) => {
-    logger.error(err.message, {
-      metadata: {
-        application: applicationName,
-      },
-    });
+    logger.error(err.message);
   });
 }
 
