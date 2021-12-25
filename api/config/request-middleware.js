@@ -1,6 +1,7 @@
+/* eslint-disable func-names */
 const joi = require('joi');
 
-const requestMiddleware = async function requestMiddleware(req, res, next) {
+const requestMiddleware = async function (req, res, next) {
   res.header(
     'Access-Control-Allow-Origin',
     '*',

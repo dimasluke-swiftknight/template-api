@@ -20,7 +20,7 @@ app.use(requestMiddleware);
 
 const { TestController } = require('./api/controllers/index');
 
-app.use('/template/api/v1/tests', TestController);
+app.use('/template/v1/api/tests', TestController);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 

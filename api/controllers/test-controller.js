@@ -7,10 +7,10 @@ const { TestModel, TestModelV1 } = require('../models/index');
 
 controller
   .get('/', async (req, res) => {
-    logger.info({
-      application: applicationName,
-      message: 'start-get-tests',
-      correlationId: req.headers['x-correlation-id'],
+    const correlationId = req.headers['x-correlation-id'];
+
+    logger.info('start-get-tests', {
+      metadata: { correlationId },
     });
 
     const testService = new TestService(TestModel);
@@ -21,10 +21,8 @@ controller
       ...await testV1Service.getTests(),
     };
 
-    logger.info({
-      application: applicationName,
-      message: 'end-get-tests',
-      correlationId: req.headers['x-correlation-id'],
+    logger.info('start-get-tests', {
+      metadata: { correlationId },
     });
 
     return res.status(200).send(result);
