@@ -4,9 +4,6 @@ info:
   title: Template
   description: This is the Template API spec
   version: 1.0.0
-servers:
-- url: https://virtserver.swaggerhub.com/dimasluke/template-api/1.0.0
-  description: SwaggerHub API Auto Mocking
 paths:
   /tests:
     get:
