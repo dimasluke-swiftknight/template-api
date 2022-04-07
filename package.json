@@ -18,8 +18,9 @@
         "swagger-ui-express": "^4.1.6",
         "uuidv4": "^6.2.12",
         "winston": "^3.3.3",
-        "winston-mongodb": "^5.0.7",
         "winston-daily-rotate-file": "^4.5.5",
+        "winston-elasticsearch": "^0.16.1",
+        "winston-mongodb": "^5.0.7",
         "yamljs": "^0.3.0"
     },
     "devDependencies": {
